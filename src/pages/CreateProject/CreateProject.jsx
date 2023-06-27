@@ -18,12 +18,12 @@ const CreateProject = () => {
     setValue,
     reset,
     formState: { errors },
- } = useForm({ mode: "onChange" });
- 
+  } = useForm({ mode: "onChange" });
+
   // Kéo state Từ QuanLyProject
   const { ArrProjectCategory } = useSelector((state) => state.QuanLyProject);
   // console.log('projectCategory',ArrProjectCategory)
- 
+
   // Editor
   const editorRef = useRef(null);
   const log = () => {
@@ -33,32 +33,11 @@ const CreateProject = () => {
   };
 
   // Call API
- const dispatch = useDispatch();
- useEffect(() => {
-   dispatch(ProjectCategory());
- }, [dispatch]);
- const Navigate = useNavigate()
- // Formik
-//  const formik = useFormik({
-//   initialValues: {
-//     projectName: "",
-//     description: "",
-//     categoryId: "1",
-//     alias:"",
-//   },
-//   validationSchema: Yup.object({
-//     projectName: Yup.string()
-//       .required("Bạn không được để trống !")
-//       .matches(/^[a-z A-Z]+$/, "Bạn phải nhập vào phải là chữ !"),
-//     description: Yup.string().required("Bạn không được để trống"),
-//     alias: Yup.string().required("Bạn không được để trống")
-//     .matches(/^[a-z A-Z]+$/, "Bạn phải nhập vào phải là chữ !"),
-//   }),
-//   onSubmit: (values) => {
-//     console.log("value:", values);
- 
-//   },
-// });
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(ProjectCategory());
+  }, [dispatch]);
+  const Navigate = useNavigate();
 
   return (
     <div>
@@ -75,33 +54,34 @@ const CreateProject = () => {
         <h1 className="mt-3 text-2xl font-medium ">Create Project</h1>
       </div>
 
-      <form onSubmit={handleSubmit(async(values) =>{
-        console.log(values)
-        try{
-          const res = await quanLyProjectServices.CreateProject(values)
-          console.log(res.data)
-          if(res.data.statusCode === 200){
-            toast.success("Bạn đã tạo thành công project")
-            Navigate('/projectManagement')
+      <form
+        onSubmit={handleSubmit(async (values) => {
+          console.log(values);
+          try {
+            const res = await quanLyProjectServices.CreateProject(values);
+            console.log(res.data);
+            if (res.data.statusCode === 200) {
+              toast.success("Bạn đã tạo thành công project");
+              Navigate("/projectManagement");
+            }
+          } catch (error) {
+            toast.error("Tên Project đã tồn tại !");
           }
-        
-        }
-        catch (error){
-          toast.error("Tên Project đã tồn tại !")
-        }
-      })} >
+        })}
+      >
         <div className="relative z-0 w-full mb-6 group">
           <input
             type="text"
-            {...register("projectName",{
-              required:"Bạn không được để trống !",
-              pattern:{
-                value : /[^a-z0-9A-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u,
-                message:"Bạn phải nhập vào là chữ !"
-              }
+            {...register("projectName", {
+              required: "Bạn không được để trống !",
+              pattern: {
+                value:
+                  /[^a-z0-9A-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u,
+                message: "Bạn phải nhập vào là chữ !",
+              },
             })}
             id="projectName"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            className="block py-2.5 px-0 w-full text-sm text-black  font-medium bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
           />
           <label
@@ -112,14 +92,13 @@ const CreateProject = () => {
           </label>
           <p className="text-red-500 my-2">{errors?.projectName?.message}</p>
         </div>
-      
+
         <div className="relative z-0 w-full mb-6 group">
           <p className="mb-2 text-sm text-gray-500">Description</p>
           <Editor
-           {...register("description",{
-            required:"Bạn không được để trống !",
-          
-          })}
+            {...register("description", {
+              required: "Bạn không được để trống !",
+            })}
             apiKey="your-api-key"
             onInit={(evt, editor) => (editorRef.current = editor)}
             initialValue=""
@@ -155,12 +134,12 @@ const CreateProject = () => {
                 "body { font-family:Helvetica,Arial,sans-serif; font-size:14px; }",
             }}
             onEditorChange={(content, editor) => {
-              setValue('description',content)
+              setValue("description", content);
             }}
           />
-           <p className="text-red-500 my-2">{errors?.description?.message}</p>
+          <p className="text-red-500 my-2">{errors?.description?.message}</p>
         </div>
-            
+
         <div className="mb-6">
           <label
             htmlFor="categoryId"
@@ -169,12 +148,11 @@ const CreateProject = () => {
             Select an option
           </label>
           <select
-            
             id="categoryId"
-            {...register("categoryId",{
-                required:"Bạn cần chọn dự án !",
+            {...register("categoryId", {
+              required: "Bạn cần chọn dự án !",
             })}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
             <option value="">Choose a project</option>
             {ArrProjectCategory.map((category, index) => {
@@ -184,22 +162,21 @@ const CreateProject = () => {
                 </option>
               );
             })}
-           
           </select>
           <p className="text-red-500 my-2">{errors?.categoryId?.message}</p>
         </div>
         <div className="relative z-0 w-full mb-6 group">
           <input
             type="text"
-            {...register("alias",{
-              required:"Bạn không được để trống !",
-              pattern:{
-                value : /^[a-z A-Z]+$/,
-                message:"Bạn phải nhập vào là chữ !"
-              }
+            {...register("alias", {
+              required: "Bạn không được để trống !",
+              pattern: {
+                value: /^[a-z A-Z]+$/,
+                message: "Bạn phải nhập vào là chữ !",
+              },
             })}
             id="alias"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            className="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
           />
           <label
@@ -210,7 +187,7 @@ const CreateProject = () => {
           </label>
           <p className="text-red-500 my-2">{errors?.alias?.message}</p>
         </div>
-       
+
         <button
           type="submit"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

@@ -17,7 +17,7 @@ const ProjectDetail = () => {
     dispatch(getProjectDetail(param.id));
   }, []);
   return (
-    <div>
+    <div className="container__detail">
       <Breadcrumb
         style={{
           color: "rgb(94, 108, 132)",

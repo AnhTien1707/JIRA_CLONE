@@ -4,7 +4,6 @@ import {
   FolderOutlined,
   FileSearchOutlined,
   UserOutlined,
-  TeamOutlined,
   ExportOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Popover } from "antd";

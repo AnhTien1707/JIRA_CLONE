@@ -27,10 +27,13 @@ const Router = () => {
       element: <CyberJira/>,
       children : [
         {
+          path:'/',
+          element:<ProjectManagement/>,
+        },
+        {
           path:'/projectManagement',
           element:<ProjectManagement/>,
         },
-       
         {
           path:'/createProject',
           element:<CreateProject/>

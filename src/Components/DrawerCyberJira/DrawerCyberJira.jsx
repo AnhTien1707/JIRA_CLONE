@@ -4,43 +4,45 @@ import { QuanLyModalAction } from "../../store/QuanLyModal/slice";
 import { Editor } from "@tinymce/tinymce-react";
 import { useEffect, useRef } from "react";
 import { useFormik } from "formik";
-import { AllProject, ProjectCategory, UpdateProject } from "../../store/QuanLyProject/thunkAction";
-import {useNavigate } from "react-router-dom";
+
+import {
+  AllProject,
+  ProjectCategory,
+  UpdateProject,
+} from "../../store/QuanLyProject/thunkAction";
+import { useNavigate } from "react-router-dom";
 const DrawerCyberJira = () => {
   const { InfoProject, ArrProjectCategory } = useSelector(
     (state) => state.QuanLyProject
   );
   const dispatch = useDispatch();
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   // Formik
- 
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id : InfoProject?.id,
+      id: InfoProject?.id,
       projectName: InfoProject?.projectName,
       alias: InfoProject?.alias,
       description: InfoProject?.description,
       categoryId: InfoProject?.projectCategory?.id,
-     
     },
 
     onSubmit: async (values) => {
       await dispatch(UpdateProject(values));
-      await dispatch(AllProject())
+      await dispatch(AllProject());
       await dispatch(QuanLyModalAction.closeModal());
-       navigate("/projectManagement")
+      navigate("/projectManagement");
     },
   });
   // Editor
   const editorRef = useRef(null);
   const { isModal } = useSelector((state) => state.QuanLyModal);
 
-
-
   useEffect(() => {
     dispatch(ProjectCategory());
-    dispatch(AllProject())
+    dispatch(AllProject());
   }, [dispatch]);
   const onClose = () => {
     dispatch(QuanLyModalAction.closeModal());
@@ -48,8 +50,9 @@ const DrawerCyberJira = () => {
   return (
     <>
       <Drawer
+        className="drawer__project"
         title="Edit Project"
-        width={600}
+        width={400}
         onClose={onClose}
         open={isModal}
         bodyStyle={{
@@ -57,9 +60,8 @@ const DrawerCyberJira = () => {
         }}
       >
         <form onSubmit={formik.handleSubmit}>
-        <div className="relative z-0 w-full mb-6 group">
+          <div className="relative z-0 w-full mb-6 group">
             <input
-              
               value={formik.values.id}
               type="text"
               id="id"
