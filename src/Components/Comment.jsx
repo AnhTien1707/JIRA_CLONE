@@ -21,7 +21,7 @@ const Comment = () => {
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="max-w-2xl mx-auto ">
-        <form className="mb-6" action="#">
+        <div className="mb-6">
           <div className="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
             <label htmlFor="comment" className="sr-only">
               Your comment
@@ -47,12 +47,11 @@ const Comment = () => {
               await dispatch(postCommentTask(postComment));
               await dispatch(getTaskDetail(arrTaskDetail.taskId));
             }}
-            type="submit"
             className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white  bg-sky-500 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
           >
             Post comment
           </button>
-        </form>
+        </div>
         {arrTaskDetail.lstComment?.map((comment, index) => {
           return (
             <article
