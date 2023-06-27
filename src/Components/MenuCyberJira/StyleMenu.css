@@ -1,0 +1,11 @@
+@media screen and (max-width: 700px) {
+  .menu__name {
+    display: none;
+  }
+  .info__user {
+    margin: 20px 0px;
+  }
+  .sider__menu {
+    height: 100vh;
+  }
+}
